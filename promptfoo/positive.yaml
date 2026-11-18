@@ -1,0 +1,28 @@
+# D8: the positive test against a silent agent.
+description: Orders (D8)
+
+providers:
+  - id: http
+    label: reference-agent
+    config:
+      url: http://127.0.0.1:8743/chat
+      method: POST
+      headers:
+        Content-Type: application/json
+      body:
+        message: "{{prompt}}"
+      # The reply is the output; the agent's own tool-call record rides in metadata.
+      transformResponse: "({ output: json.reply, metadata: { toolCalls: json.tool_calls } })"
+
+prompts:
+  - "{{message}}"
+
+tests:
+  - description: looks the order up
+    vars:
+      message: Where is order 1042?
+    assert:
+      - type: javascript
+        value: "context.metadata.toolCalls.some((call) => call.name === 'get_order' && call.args.order_id === '1042')"
+      - type: contains
+        value: in transit

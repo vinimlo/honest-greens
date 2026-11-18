@@ -1,0 +1,118 @@
+{
+ "tool": "inspect",
+ "version": "0.3.291",
+ "n": 30,
+ "python": "3.12.3",
+ "model": "mockllm/model",
+ "cells": {
+  "D1": {
+   "verdicts": {
+    "error/sample error": 30
+   },
+   "exit_codes": {
+    "0": 30
+   },
+   "first": {
+    "error/sample error": "KeyError('tool_calls')"
+   },
+   "seconds": 86.7
+  },
+  "D2": {
+   "verdicts": {
+    "success/C": 30
+   },
+   "exit_codes": {
+    "0": 30
+   },
+   "first": {
+    "success/C": "tool_policy: ok (tool calls seen: [])"
+   },
+   "seconds": 77.0
+  },
+  "D3": {
+   "verdicts": {
+    "success/C": 30
+   },
+   "exit_codes": {
+    "0": 30
+   },
+   "first": {
+    "success/C": "tool_policy: ok (tool calls seen: [])"
+   },
+   "seconds": 78.3
+  },
+  "D3b": {
+   "verdicts": {
+    "success/C": 30
+   },
+   "exit_codes": {
+    "0": 30
+   },
+   "first": {
+    "success/C": "tool_policy: ok (tool calls seen: [])"
+   },
+   "seconds": 94.7
+  },
+  "D4": {
+   "verdicts": {
+    "success/C": 30
+   },
+   "exit_codes": {
+    "0": 30
+   },
+   "first": {
+    "success/C": "tool_policy: ok (tool calls seen: [])"
+   },
+   "seconds": 87.3
+  },
+  "D5": {
+   "verdicts": {
+    "error/sample error": 30
+   },
+   "exit_codes": {
+    "0": 30
+   },
+   "first": {
+    "error/sample error": "HTTPStatusError(\"Server error '500 Internal Server Error' for url 'http://127.0.0.1:8745/chat'\\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500\")"
+   },
+   "seconds": 92.5
+  },
+  "D6": {
+   "verdicts": {
+    "success/no score": 30
+   },
+   "exit_codes": {
+    "0": 30
+   },
+   "first": {
+    "success/no score": "results={\"total_samples\":1,\"completed_samples\":1,\"logged_samples\":null,\"early_stopping\":null,\"scores\":[],\"headline\":null,\"metadata\":null}; output:                                           \n                                                                                \n                                                                                \nLog:                                                                            \n../../../..<tmp>/2026-11-18T02-35-13-00-00_empty_RTymYLU9rPS2z8jufG8V\nxo.eval                                                                         \n     "
+   },
+   "seconds": 85.0
+  },
+  "D7": {
+   "verdicts": {
+    "error/sample error": 30
+   },
+   "exit_codes": {
+    "0": 30
+   },
+   "first": {
+    "error/sample error": "RuntimeError('grader unavailable: connection refused')"
+   },
+   "seconds": 85.1
+  },
+  "D8": {
+   "verdicts": {
+    "success/I": 30
+   },
+   "exit_codes": {
+    "0": 30
+   },
+   "first": {
+    "success/I": "tool_policy: did not call get_order; reply does not contain 'in transit'"
+   },
+   "seconds": 91.1
+  }
+ },
+ "seconds": 777.6
+}

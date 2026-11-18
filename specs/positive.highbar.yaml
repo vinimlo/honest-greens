@@ -1,0 +1,17 @@
+# D8: a silent agent against a test of what it must do.
+agent:
+  start: "python agent_http.py"
+  endpoint: "http://127.0.0.1:8741/chat"
+  health: "http://127.0.0.1:8741/health"
+
+suites:
+  - name: Orders
+    tests:
+      - name: looks the order up
+        trigger: "Where is order 1042?"
+        expect:
+          function_calls:
+            - name: get_order
+              params: {order_id: "1042"}
+          response:
+            contains: "in transit"

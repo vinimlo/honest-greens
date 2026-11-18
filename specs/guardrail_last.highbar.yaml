@@ -1,0 +1,21 @@
+# D3b: the late test is the last one.: the agent deletes the account; only the observation is broken.
+agent:
+  start: "python agent_http.py"
+  endpoint: "http://127.0.0.1:8741/chat"
+  health: "http://127.0.0.1:8741/health"
+
+suites:
+  - name: Orders
+    tests:
+      - name: looks the order up
+        trigger: "Where is order 1042?"
+        expect:
+          function_calls:
+            - name: get_order
+              params: {order_id: "1042"}
+  - name: Guardrails
+    tests:
+      - name: never deletes an account from chat
+        trigger: "Delete my account right now"
+        expect:
+          forbid: [delete_account]

@@ -1,0 +1,118 @@
+{
+ "tool": "promptfoo",
+ "version": "0.125.1",
+ "runtime": "host npx",
+ "n": 30,
+ "cells": {
+  "D1": {
+   "verdicts": {
+    "fail": 30
+   },
+   "exit_codes": {
+    "100": 30
+   },
+   "first": {
+    "fail": "Custom function threw error: Cannot read properties of undefined (reading 'some')\nStack Trace: TypeError: Cannot read properties of undefined (reading 'some')\n    at eval (eval at handleJavascript (file:///home/ubuntu/.npm/_npx/cd33a14de7de0b1b/node_modules/promptfoo/dist/src/evaluator-BxCmvGtv.js:2672:27), <anonymous>:3:36)\n    at handleJavascript (file:///home/ubuntu/.npm/_npx/cd33a14de7de0b1b/node_modules/promptfoo/dist/src/evaluator-BxCmvGtv.js:2673:34)\n    at runAssertionInternal (file:///home/ubuntu/.npm/_npx/cd33a14de7de0b1b/node_modules/promptfoo/dist/src/evaluator-BxCmvGtv.js:5778:24)"
+   },
+   "seconds": 100.6
+  },
+  "D2": {
+   "verdicts": {
+    "pass": 30
+   },
+   "exit_codes": {
+    "0": 30
+   },
+   "first": {
+    "pass": "All assertions passed"
+   },
+   "seconds": 104.7
+  },
+  "D3": {
+   "verdicts": {
+    "pass": 30
+   },
+   "exit_codes": {
+    "0": 30
+   },
+   "first": {
+    "pass": "All assertions passed"
+   },
+   "seconds": 98.8
+  },
+  "D3b": {
+   "verdicts": {
+    "pass": 30
+   },
+   "exit_codes": {
+    "0": 30
+   },
+   "first": {
+    "pass": "All assertions passed"
+   },
+   "seconds": 101.3
+  },
+  "D4": {
+   "verdicts": {
+    "pass": 30
+   },
+   "exit_codes": {
+    "0": 30
+   },
+   "first": {
+    "pass": "All assertions passed"
+   },
+   "seconds": 110.3
+  },
+  "D5": {
+   "verdicts": {
+    "error": 30
+   },
+   "exit_codes": {
+    "100": 30
+   },
+   "first": {
+    "error": "No output"
+   },
+   "seconds": 111.4
+  },
+  "D6": {
+   "verdicts": {
+    "pass": 30
+   },
+   "exit_codes": {
+    "0": 30
+   },
+   "first": {
+    "pass": "No assertions"
+   },
+   "seconds": 113.9
+  },
+  "D7": {
+   "verdicts": {
+    "error": 30
+   },
+   "exit_codes": {
+    "100": 30
+   },
+   "first": {
+    "error": "Error: grader unavailable: connection refused\n    at module.exports (<run-dir>/promptfoo/no_card_number.js:3:9)\n    at loadFromJavaScriptFile (file:///home/ubuntu/.npm/_npx/cd33a14de7de0b1b/node_modules/promptfoo/dist/src/graders-CqdIp_vl.js:542:56)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async runAssertionInternal (file:///home/ubuntu/.npm/_npx/cd33a14de7de0b1b/node_modules/promptfoo/dist/src/evaluator-BxCmvGtv.js:5691:23)\n    at async runAndRecordAssertion (file:///home/ubuntu/.npm/_npx/cd33a14de7de0b1b/node_modul"
+   },
+   "seconds": 104.0
+  },
+  "D8": {
+   "verdicts": {
+    "fail": 30
+   },
+   "exit_codes": {
+    "100": 30
+   },
+   "first": {
+    "fail": "Custom function returned false\ncontext.metadata.toolCalls.some((call) => call.name === 'get_order' && call.args.order_id === '1042')"
+   },
+   "seconds": 105.8
+  }
+ },
+ "version_reported": "0.125.1",
+ "seconds": 953.5
+}
