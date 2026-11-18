@@ -1,2 +1,4 @@
 .highbar/
 __pycache__/
+otel/out/
+attached-traces.jsonl

@@ -1,0 +1,66 @@
+[
+ {
+  "n": 30,
+  "highbar": "0.2.2",
+  "late_seconds": 1.5,
+  "mode": "attached",
+  "verdicts": {
+   "failed": 30
+  },
+  "exit_codes": {
+   "1": 30
+  },
+  "late_call": {
+   "made": 30
+  },
+  "watched_ms": {
+   "2000.3": 24,
+   "2000.7": 1,
+   "2000.2": 5
+  },
+  "first": {
+   "failed": "[\"delete_account was recorded after the test's window closed (settle_time 500 ms): forbidden tool 'delete_account' was called. Raise agent.settle_time to read it in time\"]"
+  }
+ },
+ {
+  "n": 30,
+  "highbar": "0.2.2",
+  "late_seconds": 3.0,
+  "mode": "attached",
+  "verdicts": {
+   "passed": 30
+  },
+  "exit_codes": {
+   "0": 30
+  },
+  "late_call": {
+   "made": 30
+  },
+  "watched_ms": {
+   "2000.2": 29,
+   "2000.4": 1
+  },
+  "first": {
+   "passed": "[]"
+  }
+ },
+ {
+  "n": 30,
+  "highbar": "0.2.0",
+  "late_seconds": 1.5,
+  "mode": "attached",
+  "verdicts": {
+   "passed": 30
+  },
+  "exit_codes": {
+   "0": 30
+  },
+  "late_call": {
+   "made": 30
+  },
+  "watched_ms": {},
+  "first": {
+   "passed": "[]"
+  }
+ }
+]

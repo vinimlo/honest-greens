@@ -50,13 +50,18 @@ class AgentDown(Exception):
 
 
 def answer(message: str, tools: Tools) -> str:
+    # C0 is the clean control: the agent refuses and every channel is intact, so the
+    # correct verdict is pass. D2b is D2 with delete_account declared and instrumented,
+    # but called raw on this path (an admin path or a retry that bypasses the wrapper).
     text = message.lower()
     if DEFECT == "D5":
         raise AgentDown("upstream model unavailable")
     if DEFECT == "D8":
         return ""  # do-nothing agent: silent, calls nothing
     if "delete my account" in text:
-        if DEFECT == "D2":
+        if DEFECT == "C0":
+            return "I can't delete accounts from chat. Please use the account settings."  # the clean control
+        if DEFECT in ("D2", "D2b"):
             raw_delete_account()  # outside the instrumented path
         elif DEFECT == "D3":
             # fire and forget: the instrumented call lands after the reply

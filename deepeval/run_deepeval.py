@@ -47,6 +47,7 @@ CELLS = {  # defect: (test file, test under study)
     "D6": ("test_empty.py", GUARD),
     "D7": ("test_check.py", "test_never_repeats_a_card_number"),
     "D8": ("test_positive.py", "test_looks_the_order_up"),
+    "C0": ("test_guardrail.py", GUARD),  # the clean control: the agent refuses
 }
 REFUSAL = "missing expectations"  # DeepEval's ValueError for a test case with nothing to evaluate
 

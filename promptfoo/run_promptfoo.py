@@ -40,8 +40,16 @@ MIN_NODE = (22, 22, 0)
 PF_DIR = Path(__file__).resolve().parent
 HERE = PF_DIR.parent  # experimento/
 N = int(os.environ.get("HB_N", "30"))
-DEFECTS = os.environ.get("HB_DEFECTS", "D1 D2 D3 D3b D4 D5 D6 D7 D8").split()
-PORT = 8743
+# PF_CHANNEL=otel reads the trajectory from OpenTelemetry spans (agent_otel.py) with the
+# trajectory:* assertions, instead of the agent's own record in its reply.
+CHANNEL = os.environ.get("PF_CHANNEL", "reply")
+OTEL = CHANNEL == "otel"
+DEFECTS = os.environ.get(
+    "HB_DEFECTS", "D0 D2 D3 D3b D4" if OTEL else "D1 D2 D3 D3b D4 D5 D6 D7 D8"
+).split()
+PORT = 8744 if OTEL else 8743
+AGENT = "agent_otel.py" if OTEL else "agent_http_generic.py"
+CONTROL = "looks the order up"  # in the otel configs, the test that shows the spans arrived
 
 GUARD = "never deletes an account from chat"
 # defect -> (config under promptfoo/, description of the test under study)
@@ -55,7 +63,11 @@ CELLS = {
     "D6": ("empty.yaml", GUARD),
     "D7": ("check.yaml", "never repeats a card number"),
     "D8": ("positive.yaml", "looks the order up"),
+    "C0": ("guardrail.yaml", GUARD),  # the clean control: the agent refuses
 }
+if OTEL:
+    CELLS = {d: ("otel_guardrail_last.yaml" if d == "D3b" else "otel_guardrail.yaml", GUARD)
+             for d in ("D0", "D2", "D3", "D3b", "D4")}
 
 FAILURE_REASON = {0: "pass", 1: "fail", 2: "error"}  # Promptfoo's ResultFailureReason
 
@@ -130,8 +142,10 @@ def promptfoo_cmd(config: str, out: Path, home: Path, tag: str) -> list[str]:
 
 def start_agent(defect: str) -> subprocess.Popen[bytes]:
     env = {**os.environ, "HB_DEFECT": defect[:2], "HB_PORT": str(PORT)}
-    proc = subprocess.Popen([sys.executable, "agent_http_generic.py"], cwd=HERE, env=env,
-                            stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    err = WORK / f"agent-{defect}.err"  # kept for a failed start, removed with WORK
+    with err.open("wb") as sink:
+        proc = subprocess.Popen([sys.executable, AGENT], cwd=HERE, env=env,
+                                stdout=subprocess.DEVNULL, stderr=sink)
     deadline = time.time() + 20
     while time.time() < deadline:
         try:
@@ -141,7 +155,7 @@ def start_agent(defect: str) -> subprocess.Popen[bytes]:
         except OSError:
             time.sleep(0.1)
     proc.kill()
-    raise RuntimeError(f"agent did not come up on port {PORT}")
+    raise RuntimeError(f"agent did not come up on port {PORT}: {err.read_text()[-800:]}")
 
 
 def stop_agent(proc: subprocess.Popen[bytes]) -> None:
@@ -171,6 +185,8 @@ def run_cell(defect: str) -> dict[str, Any]:
     verdicts: Counter[str] = Counter()
     exits: Counter[int] = Counter()
     first: dict[str, str] = {}
+    control: Counter[str] = Counter()
+    control_first: dict[str, str] = {}
     for i in range(N):
         run_dir = WORK / f"{defect}-{i}"
         (run_dir / "config").mkdir(parents=True)
@@ -194,9 +210,16 @@ def run_cell(defect: str) -> dict[str, Any]:
             why = f"{why} | {tail}"[:600]
         verdicts[label] += 1
         first.setdefault(label, why)
+        if OTEL:
+            c_label, c_why = verdict_of(report, CONTROL) if report.exists() else ("refused", tail)
+            control[c_label] += 1
+            control_first.setdefault(c_label, c_why)
         shutil.rmtree(run_dir, ignore_errors=True)
-    return {"verdicts": dict(verdicts), "exit_codes": {str(k): v for k, v in exits.items()},
-            "first": first}
+    cell: dict[str, Any] = {"verdicts": dict(verdicts),
+                            "exit_codes": {str(k): v for k, v in exits.items()}, "first": first}
+    if OTEL:
+        cell["control"] = {"verdicts": dict(control), "first": control_first}
+    return cell
 
 
 def main() -> None:
@@ -204,6 +227,7 @@ def main() -> None:
     signal.signal(signal.SIGHUP, on_signal)
     out: dict[str, Any] = {
         "tool": "promptfoo",
+        "channel": CHANNEL,
         "version": PROMPTFOO_VERSION,
         "runtime": "host npx" if USE_HOST else f"docker {NODE_IMAGE}",
         "n": N,

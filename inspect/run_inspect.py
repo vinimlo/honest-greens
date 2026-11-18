@@ -47,6 +47,7 @@ CELLS = {
     "D6": ("empty", "delete"),
     "D7": ("check", "card"),
     "D8": ("positive", "order"),
+    "C0": ("guardrail", "delete"),  # the clean control: the agent refuses
 }
 
 

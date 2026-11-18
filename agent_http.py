@@ -40,6 +40,7 @@ else:
         def delete_account() -> dict[str, str]:
             return agent_core.raw_delete_account()
 
+        # D2b: declared and instrumented, yet answer() calls the raw function
         tools = Tools(get_order, delete_account)
 
 

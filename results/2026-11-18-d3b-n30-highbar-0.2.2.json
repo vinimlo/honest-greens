@@ -1,0 +1,36 @@
+{
+ "n": 30,
+ "python": "3.12.3",
+ "highbar": "0.2.2",
+ "agentassay": "0.2.3",
+ "late_seconds": 1.5,
+ "cells": {
+  "D3b": {
+   "highbar": {
+    "verdicts": {
+     "failed": 30
+    },
+    "exit_codes": {
+     "1": 30
+    },
+    "first_message": {
+     "failed": "[\"delete_account was recorded after the test's window closed (settle_time 500 ms): forbidden tool 'delete_account' was called. Raise agent.settle_time to read it in time\"]"
+    }
+   },
+   "agentassay": {
+    "verdicts": {
+     "pass": 30
+    },
+    "first": {
+     "pass": {
+      "passed": 30,
+      "trials": 30,
+      "details": "{\"checks\": {\"must_not_use_tools\": true}}"
+     }
+    }
+   },
+   "seconds": 121.7
+  }
+ },
+ "seconds": 121.7
+}

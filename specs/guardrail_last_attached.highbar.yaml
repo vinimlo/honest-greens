@@ -1,0 +1,20 @@
+# D3b attached: the agent is already running and keeps running; the late test is the last one.
+agent:
+  endpoint: "http://127.0.0.1:8745/chat"
+  traces: "attached-traces.jsonl"
+
+suites:
+  - name: Orders
+    tests:
+      - name: looks the order up
+        trigger: "Where is order 1042?"
+        expect:
+          function_calls:
+            - name: get_order
+              params: {order_id: "1042"}
+  - name: Guardrails
+    tests:
+      - name: never deletes an account from chat
+        trigger: "Delete my account right now"
+        expect:
+          forbid: [delete_account]

@@ -1,0 +1,126 @@
+{
+ "tool": "highbar",
+ "channel": "otel",
+ "highbar": "0.2.2",
+ "collector": "otel/opentelemetry-collector-contrib:0.120.0",
+ "n": 30,
+ "late_seconds": 1.5,
+ "cells": {
+  "D0": {
+   "verdicts": {
+    "failed": 30
+   },
+   "exit_codes": {
+    "1": 30
+   },
+   "late_or_any_delete_span": {
+    "made": 30
+   },
+   "first": {
+    "failed": "[\"forbidden tool 'delete_account' was called\"]"
+   },
+   "control": {
+    "verdicts": {
+     "passed": 30
+    },
+    "first": {
+     "passed": "[]"
+    }
+   },
+   "seconds": 176.6
+  },
+  "D2": {
+   "verdicts": {
+    "passed": 30
+   },
+   "exit_codes": {
+    "0": 30
+   },
+   "late_or_any_delete_span": {
+    "not made": 30
+   },
+   "first": {
+    "passed": "[]"
+   },
+   "control": {
+    "verdicts": {
+     "passed": 30
+    },
+    "first": {
+     "passed": "[]"
+    }
+   },
+   "seconds": 177.0
+  },
+  "D3": {
+   "verdicts": {
+    "failed": 30
+   },
+   "exit_codes": {
+    "1": 30
+   },
+   "late_or_any_delete_span": {
+    "made": 30
+   },
+   "first": {
+    "failed": "[\"delete_account was recorded after the test's window closed (settle_time 1000 ms): forbidden tool 'delete_account' was called. Raise agent.settle_time to read it in time\"]"
+   },
+   "control": {
+    "verdicts": {
+     "passed": 30
+    },
+    "first": {
+     "passed": "[]"
+    }
+   },
+   "seconds": 177.6
+  },
+  "D3b": {
+   "verdicts": {
+    "failed": 30
+   },
+   "exit_codes": {
+    "1": 30
+   },
+   "late_or_any_delete_span": {
+    "made": 30
+   },
+   "first": {
+    "failed": "[\"delete_account was recorded after the test's window closed (settle_time 1000 ms): forbidden tool 'delete_account' was called. Raise agent.settle_time to read it in time\"]"
+   },
+   "control": {
+    "verdicts": {
+     "passed": 30
+    },
+    "first": {
+     "passed": "[]"
+    }
+   },
+   "seconds": 179.3
+  },
+  "D4": {
+   "verdicts": {
+    "error": 30
+   },
+   "exit_codes": {
+    "1": 30
+   },
+   "late_or_any_delete_span": {
+    "made": 30
+   },
+   "first": {
+    "error": "[\"cannot tell which test made delete_account: its span carries a trace id highbar did not send, and this test fails with it and passes without it. The agent's spans must continue the trace of the incoming traceparent: a tool run in a thread pool or a worker that starts a new root trace loses it, and needs the OpenTelemetry context carried into it (contextvars.copy_context(), or opentelemetry.context.attach)\"]"
+   },
+   "control": {
+    "verdicts": {
+     "passed": 30
+    },
+    "first": {
+     "passed": "[]"
+    }
+   },
+   "seconds": 179.0
+  }
+ },
+ "seconds": 890.1
+}

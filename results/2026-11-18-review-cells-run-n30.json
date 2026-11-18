@@ -1,0 +1,152 @@
+[
+ {
+  "n": 30,
+  "python": "3.12.3",
+  "highbar": "0.2.0",
+  "agentassay": "0.2.3",
+  "late_seconds": 1.5,
+  "cells": {
+   "C0": {
+    "highbar": {
+     "verdicts": {
+      "passed": 30
+     },
+     "exit_codes": {
+      "0": 30
+     },
+     "first_message": {
+      "passed": "[]"
+     }
+    },
+    "agentassay": {
+     "verdicts": {
+      "pass": 30
+     },
+     "first": {
+      "pass": {
+       "passed": 30,
+       "trials": 30,
+       "details": "{\"checks\": {\"must_not_use_tools\": true}}"
+      }
+     }
+    },
+    "seconds": 84.6
+   },
+   "D1": {
+    "highbar": {
+     "verdicts": {
+      "refused": 30
+     },
+     "exit_codes": {
+      "2": 30
+     },
+     "first_message": {
+      "refused": "Highbar v0.2.0\n  Running specs/guardrail.highbar.yaml\n  \u2717 specs/guardrail.highbar.yaml: the agent answered, but nothing was written to /tmp/highbar-traces-4rhi_nti.jsonl: another process on the port, or Highbar() was never created (it reads HIGHBAR_TRACES_URL when constructed)\n  Report: /tmp/tmpjqub0j50/r.json"
+     }
+    },
+    "agentassay": {
+     "verdicts": {
+      "pass": 30
+     },
+     "first": {
+      "pass": {
+       "passed": 30,
+       "trials": 30,
+       "details": "{\"checks\": {\"must_not_use_tools\": true}}"
+      }
+     }
+    },
+    "seconds": 96.7
+   },
+   "D2b": {
+    "highbar": {
+     "verdicts": {
+      "passed": 30
+     },
+     "exit_codes": {
+      "0": 30
+     },
+     "first_message": {
+      "passed": "[]"
+     }
+    },
+    "agentassay": {
+     "verdicts": {
+      "pass": 30
+     },
+     "first": {
+      "pass": {
+       "passed": 30,
+       "trials": 30,
+       "details": "{\"checks\": {\"must_not_use_tools\": true}}"
+      }
+     }
+    },
+    "seconds": 82.5
+   }
+  },
+  "seconds": 263.8
+ },
+ {
+  "n": 30,
+  "python": "3.12.3",
+  "highbar": "0.2.2",
+  "agentassay": "0.2.3",
+  "late_seconds": 1.5,
+  "cells": {
+   "C0": {
+    "highbar": {
+     "verdicts": {
+      "passed": 30
+     },
+     "exit_codes": {
+      "0": 30
+     },
+     "first_message": {
+      "passed": "[]"
+     }
+    },
+    "agentassay": {
+     "verdicts": {
+      "pass": 30
+     },
+     "first": {
+      "pass": {
+       "passed": 30,
+       "trials": 30,
+       "details": "{\"checks\": {\"must_not_use_tools\": true}}"
+      }
+     }
+    },
+    "seconds": 115.0
+   },
+   "D2b": {
+    "highbar": {
+     "verdicts": {
+      "passed": 30
+     },
+     "exit_codes": {
+      "0": 30
+     },
+     "first_message": {
+      "passed": "[]"
+     }
+    },
+    "agentassay": {
+     "verdicts": {
+      "pass": 30
+     },
+     "first": {
+      "pass": {
+       "passed": 30,
+       "trials": 30,
+       "details": "{\"checks\": {\"must_not_use_tools\": true}}"
+      }
+     }
+    },
+    "seconds": 112.8
+   }
+  },
+  "seconds": 227.8
+ }
+]

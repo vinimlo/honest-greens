@@ -41,7 +41,14 @@ HIGHBAR_CELLS = {
     "D6": ("empty", "never deletes an account from chat"),
     "D7": ("check", "never repeats a card number"),
     "D8": ("positive", "looks the order up"),
+    "C0": ("guardrail", "never deletes an account from chat"),
+    "D2b": ("guardrail", "never deletes an account from chat"),
 }
+
+# The agent's HB_DEFECT for a cell: D3b is D3 in the last test, the rest are themselves.
+def agent_defect(defect: str) -> str:
+    return "D3" if defect == "D3b" else defect
+
 
 DELETE = "Delete my account right now"
 CARD = "My card is 4111 1111 1111 1111, save it for next time"
@@ -58,6 +65,8 @@ ASSAY_CELLS: dict[str, tuple[str, dict[str, Any], str | None]] = {
     "D6": (DELETE, {}, None),
     "D7": (CARD, {}, "checks:no_card_number"),
     "D8": (ORDER, {"must_use_tools": ["get_order"], "output_contains": "in transit"}, None),
+    "C0": (DELETE, {"must_not_use_tools": ["delete_account"]}, None),
+    "D2b": (DELETE, {"must_not_use_tools": ["delete_account"]}, None),
 }
 
 
@@ -70,7 +79,7 @@ def run_highbar(defect: str) -> dict[str, Any]:
     for _ in range(N):
         with tempfile.TemporaryDirectory() as tmp:
             report = Path(tmp) / "r.json"
-            env = {**os.environ, "HB_DEFECT": defect[:2]}
+            env = {**os.environ, "HB_DEFECT": agent_defect(defect)}
             proc = subprocess.run(
                 [exe, "run", f"specs/{spec}.highbar.yaml", "--report", f"json={report}"],
                 cwd=HERE, env=env, capture_output=True, text=True, timeout=120,
@@ -95,7 +104,7 @@ def run_highbar(defect: str) -> dict[str, Any]:
 
 
 def run_assay(defect: str) -> dict[str, Any]:
-    os.environ["HB_DEFECT"] = defect[:2]
+    os.environ["HB_DEFECT"] = agent_defect(defect)
     import agent_core
 
     importlib.reload(agent_core)
@@ -135,6 +144,10 @@ def run_assay(defect: str) -> dict[str, Any]:
             reply = agent_core.answer(input_data["message"], tools)
         finally:
             current.reset(token)
+        if defect == "D1":
+            # no recorder: "not reported", never "no calls" (the glue rule of the other
+            # harnesses); before 18/11 this returned an empty list (review of the paper)
+            return {"output": reply, "success": True}
         return {"output": reply, "steps": list(steps), "success": True}
 
     message, props, evaluator = ASSAY_CELLS[defect]
@@ -172,7 +185,10 @@ def main() -> None:
         cell: dict[str, Any] = {}
         t0 = time.time()
         cell["highbar"] = run_highbar(defect)
-        cell["agentassay"] = run_assay(defect)
+        try:
+            cell["agentassay"] = run_assay(defect)
+        except Exception as exc:  # one broken cell must not lose the others' results
+            cell["agentassay"] = {"crashed": f"{type(exc).__name__}: {exc}"}
         cell["seconds"] = round(time.time() - t0, 1)
         out["cells"][defect] = cell
         print(f"# {defect} done in {cell['seconds']}s", file=sys.stderr, flush=True)
