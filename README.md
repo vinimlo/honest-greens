@@ -88,3 +88,7 @@ Notes on the table.
 - **Who wrote it.** The defects came from highbar's own code reviews, so the selection favors it. The highbar false greens are 0.2.0 D3b, 0.2.2 D3b at 3.0 s, D2 over OpenTelemetry, and D2b. The other tools' maintainers have not reviewed these configurations yet.
 
 A configuration that is unfair to a tool is a bug in this experiment, and corrections are welcome.
+
+## License
+
+MIT, see `LICENSE`.
