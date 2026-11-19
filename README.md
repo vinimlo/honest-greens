@@ -79,6 +79,7 @@ Notes on the table.
 - AgentAssay's D1 was run again on 18 November with the step list omitted. `CustomAdapter` reads a missing list as no steps, so it is still PASS. Its D2b gets the same input as its D2.
 - The reply and the step list carry no tool inventory, so D2b gives the three reply-reading tools the same reply as D2, and it was not run for them.
 - Over OpenTelemetry spans, Promptfoo passes D2, D3, D3b and D4, and highbar's OTLP reader passes D2 only (`results/2026-11-18-*-otel-n30.json`).
+- The tool bodies log each call they run when `HB_GROUND_TRUTH` names a file. With highbar 0.2.0, `delete_account` ran in 30 of 30 runs of D2, D2b, D3 and D4, and in none of D3b, where highbar stopped the agent before the late call (`results/2026-11-19-made-count-n30.json`).
 
 ## What we are unsure about, and would like checked
 

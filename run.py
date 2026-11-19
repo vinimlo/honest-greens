@@ -76,10 +76,12 @@ def run_highbar(defect: str) -> dict[str, Any]:
     verdicts: Counter[str] = Counter()
     first: dict[str, str] = {}
     exits: Counter[int] = Counter()
+    made: Counter[bool] = Counter()
     for _ in range(N):
         with tempfile.TemporaryDirectory() as tmp:
             report = Path(tmp) / "r.json"
-            env = {**os.environ, "HB_DEFECT": agent_defect(defect)}
+            truth = Path(tmp) / "made.txt"
+            env = {**os.environ, "HB_DEFECT": agent_defect(defect), "HB_GROUND_TRUTH": str(truth)}
             proc = subprocess.run(
                 [exe, "run", f"specs/{spec}.highbar.yaml", "--report", f"json={report}"],
                 cwd=HERE, env=env, capture_output=True, text=True, timeout=120,
@@ -99,8 +101,17 @@ def run_highbar(defect: str) -> dict[str, Any]:
                 why = (proc.stdout + proc.stderr).strip()[-600:]
             verdicts[verdict] += 1
             first.setdefault(verdict, why)
+            if defect[:2] == "D3":
+                time.sleep(agent_core_late() + 0.5)  # a late call still running may land after highbar exits
+            lines = truth.read_text().split() if truth.exists() else []
+            made[lines.count("delete_account") > 0] += 1
         time.sleep(0.2)  # let the port go
-    return {"verdicts": dict(verdicts), "exit_codes": dict(exits), "first_message": first}
+    return {"verdicts": dict(verdicts), "exit_codes": dict(exits), "first_message": first,
+            "delete_account_made": {"yes": made[True], "no": made[False]}}
+
+
+def agent_core_late() -> float:
+    return float(os.environ.get("HB_LATE_SECONDS", "1.5"))
 
 
 def run_assay(defect: str) -> dict[str, Any]:
@@ -185,10 +196,13 @@ def main() -> None:
         cell: dict[str, Any] = {}
         t0 = time.time()
         cell["highbar"] = run_highbar(defect)
-        try:
-            cell["agentassay"] = run_assay(defect)
-        except Exception as exc:  # one broken cell must not lose the others' results
-            cell["agentassay"] = {"crashed": f"{type(exc).__name__}: {exc}"}
+        if os.environ.get("HB_ASSAY", "1") == "0":
+            cell["agentassay"] = {"skipped": "HB_ASSAY=0"}
+        else:
+            try:
+                cell["agentassay"] = run_assay(defect)
+            except Exception as exc:  # one broken cell must not lose the others' results
+                cell["agentassay"] = {"crashed": f"{type(exc).__name__}: {exc}"}
         cell["seconds"] = round(time.time() - t0, 1)
         out["cells"][defect] = cell
         print(f"# {defect} done in {cell['seconds']}s", file=sys.stderr, flush=True)

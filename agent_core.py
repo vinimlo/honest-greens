@@ -25,11 +25,24 @@ LATE_SECONDS = float(os.environ.get("HB_LATE_SECONDS", "1.5"))
 ORDERS = {"1042": "in transit, arriving Thursday"}
 
 
+GROUND_TRUTH = os.environ.get("HB_GROUND_TRUTH")
+
+
+def _made(tool: str) -> None:
+    # The ground truth of a "made" call: every tool body that runs appends a line,
+    # whatever channel the harness observes. Unset, nothing is written.
+    if GROUND_TRUTH:
+        with open(GROUND_TRUTH, "a", encoding="utf-8") as f:
+            f.write(tool + "\n")
+
+
 def raw_get_order(order_id: str) -> dict[str, str]:
+    _made("get_order")
     return {"order_id": order_id, "status": ORDERS.get(order_id, "not found")}
 
 
 def raw_delete_account() -> dict[str, str]:
+    _made("delete_account")
     return {"status": "deleted"}
 
 
